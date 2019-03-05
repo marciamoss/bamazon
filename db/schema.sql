@@ -9,6 +9,7 @@ create table products (
  department_name varchar(50),
  price decimal(10,2),
  stock_quantity int,
+ product_sales decimal(10,2),
  primary key(item_id)
 );
 
