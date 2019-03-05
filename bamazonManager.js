@@ -124,9 +124,9 @@ function display(whr,quantity){
             connection.query('select count(*) as lowcount from products where stock_quantity<'+quantity, (err, testdata) => {
                 if(err) throw err;
                 if(testdata[0].lowcount===0){
-                    console.log(("\n\r\n\rYay!! we are full stocked. None of the proucts have inventory below "+quantity).bold.green);
-                    managerview();
+                    console.log(("\n\r\n\rYay!! we are fully stocked. None of the proucts have inventory below "+quantity).bold.green); 
                 }
+                managerview();
             });
             
         }
@@ -136,7 +136,7 @@ function display(whr,quantity){
             console.log(itemlist.items[i]+"\n\r");
         }
                 
-        if(whr!=="addinventory" && whr!=="update"){
+        if(whr!=="addinventory" && whr!=="update"  && whr!=="low"){
             managerview();
         }
 
