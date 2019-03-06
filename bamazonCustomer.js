@@ -84,7 +84,7 @@ const inventoryUpdate=(orderid,quantity) => {
             (err1, dataupdate) => {
                 if(err1) throw err1;
                 
-                console.log("\n\rYour Order has been placed, The total purchse price is: $"+totalcost.toFixed(2)+"\n\n\rBelow is the updated inventory\n\r".bold.magenta);
+                console.log(("\n\rYour Order has been placed, The total purchase price is: $"+totalcost.toFixed(2)+"\n\n\rBelow is the updated inventory\n\r").bold.magenta);
                 setTimeout(customerview,1000);
             });
         }else{
