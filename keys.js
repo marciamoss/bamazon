@@ -1,7 +1,8 @@
 exports.dbpassword = {
-  host: 'localhost',
-  port: 3306,
-  user: 'root',
+  host: process.env.DBHOST,
+  port: process.env.DBPORT,
+  user: process.env.DBUSER,
   password: process.env.DBPASSWORD ,
-  database: 'bamazon_db'
+  database: process.env.DBDATABASE
 };
+
