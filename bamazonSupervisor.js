@@ -59,7 +59,7 @@ function supervisorview(){
                 inquirer.prompt([
                     {
                         name: "depname",
-                        message: ("Enter the department name?\n\r").bold.blue,
+                        message: ("Enter the department name?").bold.blue,
                     },
                     {
                         name: "overhead",
@@ -69,7 +69,7 @@ function supervisorview(){
                             }
                             return false;
                         },
-                        message: ("Enter the department over head costs?\n\r").bold.blue,
+                        message: ("Enter the department over head costs?").bold.blue,
                     }
                     ]).then((adddept) => {
                         console.log(adddept.depname,adddept.overhead);
