@@ -78,10 +78,13 @@ const inventoryUpdate=(orderid,quantity) => {
         if(err) throw err; 
         
         if(((datacheck[0].stock_quantity)-quantity)>=0){
+            var totalcost=datacheck[0].price*quantity;
+            
             connection.query(`UPDATE products SET stock_quantity=stock_quantity ${-quantity}, product_sales=IFNULL(product_sales, 0)+(price*${quantity}) WHERE item_id=${orderid}`,
             (err1, dataupdate) => {
                 if(err1) throw err1;
-                console.log("\n\rYour Order Has been placed, Below is the updated inventory\n\r".bold.magenta);
+                
+                console.log("\n\rYour Order has been placed, The total purchse price is: $"+totalcost.toFixed(2)+"\n\n\rBelow is the updated inventory\n\r".bold.magenta);
                 setTimeout(customerview,1000);
             });
         }else{
