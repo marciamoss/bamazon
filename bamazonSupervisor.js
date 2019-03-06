@@ -73,9 +73,8 @@ function supervisorview(){
                     }
                     ]).then((adddept) => {
                         console.log(adddept.depname,adddept.overhead);
-                        connection.query("insert into departments SET department_name='"+adddept.depname+"', over_head_costs="+adddept.overhead, (err, datainsert) => {
+                        connection.query(`insert into departments SET department_name='${adddept.depname}', over_head_costs=${adddept.overhead}`, (err, datainsert) => {
                             if(err) throw err; 
-
                             console.log("New department has been added");
                             supervisorview();
                             
