@@ -44,13 +44,24 @@ function customerview(){
             {
                 name: "quantity",
                 validate: function(value){
-                    if(isNaN(value)===false && value>0){
+                    if((isNaN(value)===false && value>0) || value.toLowerCase()==='q'){
                         return true;
                     }
                     return false;
                 },
-                message: ("\nHow many would you like?")
-            }
+                message: ("\nHow many would you like? [PRESS Q TO QUIT]")
+            },
+            {
+                when: (response) => { 
+                    
+                    if(response.quantity.toLowerCase()!=='q'){
+                        return false;
+                    }else{ 
+                        console.log("Good Bye!!".magenta.bold);
+                        process.exit();
+                    }
+                }
+            },
         ]).then((order) => {
             
             inventoryUpdate(itemlist.itemsid[itemlist.items.indexOf(order.item)], order.quantity);         
@@ -63,11 +74,11 @@ function customerview(){
 customerview();
 
 const inventoryUpdate=(orderid,quantity) => {
-    connection.query('select * from products where item_id='+orderid, (err, datacheck) => {
+    connection.query(`select * from products where item_id=${orderid}`, (err, datacheck) => {
         if(err) throw err; 
         
         if(((datacheck[0].stock_quantity)-quantity)>=0){
-            connection.query("UPDATE products SET stock_quantity=stock_quantity"+-quantity+", product_sales=IFNULL(product_sales, 0)+(price*"+quantity+") WHERE item_id="+orderid,
+            connection.query(`UPDATE products SET stock_quantity=stock_quantity ${-quantity}, product_sales=IFNULL(product_sales, 0)+(price*${quantity}) WHERE item_id=${orderid}`,
             (err1, dataupdate) => {
                 if(err1) throw err1;
                 console.log("\n\rYour Order Has been placed, Below is the updated inventory\n\r".bold.magenta);
