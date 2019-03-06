@@ -102,7 +102,7 @@ function display(whr,quantity){
             if(err) throw err;
             
             if(testdata[0].lowcount===0){
-                console.log(("\n\r\n\rYAY!! WE ARE FULL STOCKED. NONE OF THE PRODUCTS HAVE INVENTORY BELOW "+quantity).bold.green); 
+                console.log(("\n\r\n\rYAY!! WE ARE FULLY STOCKED. NONE OF THE PRODUCTS HAVE INVENTORY BELOW "+quantity).bold.green); 
                 managerview();
             }else{
                 sqlquery=`select * from products where stock_quantity < ${quantity}`;
