@@ -93,81 +93,89 @@ function display(whr,quantity){
     //Creates query based on the manager selection    
     if(whr==="view" || whr==="addinventory"){
         var sqlquery='select * from products';
+        querycall(sqlquery,whr,quantity);
     }else if(whr==="low"){
-        var sqlquery='select * from products where stock_quantity<'+quantity;
-    }else if(whr==="update"){
-        var sqlquery="UPDATE products SET stock_quantity=stock_quantity+"+quantity.itemcount+" WHERE item_id="+quantity.itemid;
-    }else if(whr==="addnewproduct"){
-        var sqlquery="insert into products SET product_name='"+quantity.productname+"'"
-        +", department_name='"+quantity.deptname+"'"+", price="+quantity.productcost+
-        ", stock_quantity="+quantity.productnum;
-    }
-
-    const query=connection.query(sqlquery, (err, data) => {
-        if(err) throw err; 
-        var itemlist={items:[],itemsid:[]};
         
-        if(whr!=="update" && whr!=="addnewproduct"){
-            console.log("\n\r");
-            console.log((`\n\r${strpad.center('ITEMID', 6)} | ${strpad.right('PRODUCT NAME', 35)} | ${strpad.right('DEPARTMENT NAME', 15)} | ${strpad.left('PRICE', 8)} | ${strpad.left('STOCK', 7)}  \n${'---------------------------------------------------------------------------------------'}\n`),);
-        }else if(whr==="update"){
-            //perform a check in case the manager enters a wrong id for inventory update
-            connection.query('select count(*) as idexist,product_name from products where item_id=?',[quantity.itemid], (err, testdata) => {
-                if(err) throw err;
-                if(testdata[0].idexist>0){
-                    console.log(("\n\rSuccessfully added "+quantity.itemcount+" "+testdata[0].product_name+"\n\r").bold.green);
-                }else{
-                    console.log(("\n\r"+quantity.itemid+" ID does not exist Try Again!!!\n\r").bold.bgRed);
-                }
-                managerview();
-
-            });
-            
-        }else if(whr==="addnewproduct"){
-            console.log(("\n\r"+quantity.productnum+" "+quantity.productname+" Successfully added to BAMAZON\n\r").bold.green);
-        }
-
         //this message display is for the situation when there is no low inventory
-        if(whr==="low"){
-            connection.query('select count(*) as lowcount from products where stock_quantity<'+quantity, (err, testdata) => {
-                if(err) throw err;
-                if(testdata[0].lowcount===0){
-                    console.log(("\n\r\n\rYay!! we are fully stocked. None of the proucts have inventory below "+quantity).bold.green); 
-                }
-                managerview();
-            });
+        var sqlquery;
+        connection.query(`select count(*) as lowcount from products where stock_quantity< ${quantity}`, (err, testdata) => {
+            if(err) throw err;
             
-        }
-        for(var i=0;i<data.length;i++){
-            itemlist.items.push(`${strpad.center(data[i].item_id.toString(), 6)} | ${strpad.right(data[i].product_name, 35)} | ${strpad.right(data[i].department_name, 15)} | ${strpad.left(data[i].price.toFixed(2).toString(), 8)} | ${strpad.left(data[i].stock_quantity.toString(), 7)}`);
-            itemlist.itemsid.push(data[i].item_id);
-            console.log(itemlist.items[i]+"\n\r");
-        }
+            if(testdata[0].lowcount===0){
+                console.log(("\n\r\n\rYAY!! WE ARE FULL STOCKED. NONE OF THE PRODUCTS HAVE INVENTORY BELOW "+quantity).bold.green); 
+                managerview();
+            }else{
+                sqlquery=`select * from products where stock_quantity < ${quantity}`;
+                querycall(sqlquery,whr,quantity);
+            }
+        });
+    }else if(whr==="update"){
+        var sqlquery=`UPDATE products SET stock_quantity=stock_quantity + ${quantity.itemcount} WHERE item_id = ${quantity.itemid}`;
+        querycall(sqlquery,whr,quantity);
+    }else if(whr==="addnewproduct"){
+        var sqlquery=`insert into products SET product_name='${quantity.productname}', department_name='${quantity.deptname}', 
+        price=${quantity.productcost}, stock_quantity=${quantity.productnum}`;
+        querycall(sqlquery,whr,quantity);
+    }
+}
+
+
+function querycall(sqlquery,whr,quantity){
+    if(sqlquery!==undefined){
+        const query=connection.query(sqlquery, (err, data) => {
+            if(err) throw err; 
+            var itemlist={items:[],itemsid:[]};
+            //console.log("whr "+whr);
+            if(whr!=="update" && whr!=="addnewproduct"){
+                console.log("\n\r");
+                console.log((`\n\r${strpad.center('ITEMID', 6)} | ${strpad.right('PRODUCT NAME', 35)} | ${strpad.right('DEPARTMENT NAME', 15)} | ${strpad.left('PRICE', 8)} | ${strpad.left('STOCK', 7)}  \n${'---------------------------------------------------------------------------------------'}\n`),);
+            }else if(whr==="update"){
+                //perform a check in case the manager enters a wrong id for inventory update
+                connection.query('select count(*) as idexist,product_name from products where item_id=?',[quantity.itemid], (err, testdata) => {
+                    if(err) throw err;
+                    if(testdata[0].idexist>0){
+                        console.log(("\n\rSuccessfully added "+quantity.itemcount+" "+testdata[0].product_name+"\n\r").bold.green);
+                    }else{
+                        console.log(("\n\r"+quantity.itemid+" ID does not exist Try Again!!!\n\r").bold.bgRed);
+                    }
+                    managerview();
+
+                });
                 
-        if(whr!=="addinventory" && whr!=="update"  && whr!=="low"){
-            managerview();
-        }
+            }else if(whr==="addnewproduct"){
+                console.log(("\n\r"+quantity.productnum+" "+quantity.productname+" Successfully added to BAMAZON\n\r").bold.green);
+            }
 
-        if(whr==="addinventory"){
-            inquirer.prompt([
-                {
-                    name: "itemid",
-                    message: ("\n\rWhat is the id of the item you would like to add to?".bold.yellow)
-                },
-                {
-                    name: "itemcount",
-                    validate: function(value){
-                        if(isNaN(value)===false && value>0){
-                            return true;
-                        }
-                        return false;
+            for(var i=0;i<data.length;i++){
+                itemlist.items.push(`${strpad.center(data[i].item_id.toString(), 6)} | ${strpad.right(data[i].product_name, 35)} | ${strpad.right(data[i].department_name, 15)} | ${strpad.left(data[i].price.toFixed(2).toString(), 8)} | ${strpad.left(data[i].stock_quantity.toString(), 7)}`);
+                itemlist.itemsid.push(data[i].item_id);
+                console.log(itemlist.items[i]+"\n\r");
+            }
+                    
+            if(whr!=="addinventory" && whr!=="update"){
+                managerview();
+            }
+
+            if(whr==="addinventory"){
+                inquirer.prompt([
+                    {
+                        name: "itemid",
+                        message: ("\n\rWhat is the id of the item you would like to add to?".bold.yellow)
                     },
-                    message: ("How many would you like to add?".bold.yellow)
-                }
-            ]).then((additem) => {
-                display("update",additem);
-            });
-        }
-    });
-
+                    {
+                        name: "itemcount",
+                        validate: function(value){
+                            if(isNaN(value)===false && value>0){
+                                return true;
+                            }
+                            return false;
+                        },
+                        message: ("How many would you like to add?".bold.yellow)
+                    }
+                ]).then((additem) => {
+                    display("update",additem);
+                });
+            }
+        });
+    }
 }
