@@ -14,3 +14,12 @@ create table products (
 );
 
 select * from products;
+
+create table departments (
+ department_id int not null auto_increment,
+ department_name varchar(50),
+ over_head_costs decimal(10,2),
+ primary key(department_id)
+);
+
+select * from departments;

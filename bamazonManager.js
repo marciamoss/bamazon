@@ -19,6 +19,17 @@ function managerview(){
             type: "list",
             message: ("What would you like to do?\n\r").bold.blue,
             choices: ['View Products for Sale', 'View Low Inventory', 'Add to Inventory', 'Add New Product', 'Quit']
+        },
+        {
+            when: (response) => { 
+                
+                if(response.item!=='Quit'){
+                    return false;
+                }else{ 
+                    console.log("Good Bye!!".magenta.bold);
+                    process.exit();
+                }
+            }
         }
         ]).then((mgrorder) => {
             if(mgrorder.item==='View Products for Sale'){
@@ -28,7 +39,7 @@ function managerview(){
             }else if(mgrorder.item==='Add to Inventory'){
                 display("addinventory");
             }else if(mgrorder.item==='Add New Product'){
-                connection.query('select distinct(department_name) as dep FROM bamazon_db.products', (err, data) => {
+                connection.query('select distinct(department_name) as dep FROM bamazon_db.departments', (err, data) => {
                     if(err) throw err; 
                     var deplist=[];
                     for(var i=0;i<data.length;i++){
@@ -70,9 +81,6 @@ function managerview(){
                         display("addnewproduct",addproduct);
                     });
                 });
-            }else if(mgrorder.item==='Quit'){
-                console.log("Good Bye!!".magenta.bold);
-                connection.end();
             }
         }
     );
