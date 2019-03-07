@@ -36,7 +36,7 @@ function supervisorview(){
                 console.log("\n\r");
                 console.log((`\n\r${strpad.center('DEPARTMENT_ID', 6)} | ${strpad.right('DEPARTMENT NAME', 35)} | ${strpad.left('OVERHEAD COSTS', 8)} | ${strpad.left('PRODUCT SALES', 8)} | ${strpad.left('TOTAL PROFIT', 8)}\n${'-----------------------------------------------------------------------------------------------------'}\n`),);
 
-                connection.query("select department_id, department_name,over_head_costs, sum(product_sales) as totalsales from (SELECT departments.*,products.product_sales FROM departments LEFT JOIN products ON departments.department_name = products.department_name) as sumtable group by department_name", (err, datajoin) => {
+                connection.query("select department_id, department_name,over_head_costs, sum(product_sales) as totalsales from (SELECT departments.*,products.product_sales FROM departments LEFT JOIN products ON departments.department_name = products.department_name) as sumtable group by department_name  order by totalsales  desc", (err, datajoin) => {
                     if(err) throw err; 
                     var profit=[], itemlist={items:[],itemsid:[]};
                     for(var i=0;i<datajoin.length;i++){
