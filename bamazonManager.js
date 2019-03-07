@@ -49,6 +49,12 @@ function managerview(){
                     inquirer.prompt([
                         {
                             name: "productname",
+                            validate: function(value){
+                                if(value.length>0){
+                                    return true;
+                                }
+                                return false;
+                            },
                             message: ("\n\rWhat is the name of the product you would like to add?".bold.yellow)
                         },
                         {
