@@ -1,8 +1,11 @@
 # bamazon
 
 **video link for installation:** https://drive.google.com/open?id=1zzmj2OI7pAYA3QPWpkXC7wjjeJJ9tiJi
+
 **video link for customer view:** https://drive.google.com/open?id=1XzgWptH0HEZ8tvZu_i0xRSk3Y377jheX
+
 **video link for manager view:** https://drive.google.com/open?id=1GFEC2rTiEaf_kGYNk2_W-tzFT5HP8z19
+
 **video link for supervisor view:** https://drive.google.com/open?id=1kljUKlesegiFnhJu4gSLJh04_nMkdTJK
 
 * Bamazon is an Amazon-like storefront created with the MySQL skills.
