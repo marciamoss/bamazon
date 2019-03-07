@@ -1,5 +1,10 @@
 # bamazon
 
+**video link for installation:** https://drive.google.com/open?id=1zzmj2OI7pAYA3QPWpkXC7wjjeJJ9tiJi
+**video link for customer view:** https://drive.google.com/open?id=1XzgWptH0HEZ8tvZu_i0xRSk3Y377jheX
+**video link for manager view:** https://drive.google.com/open?id=1GFEC2rTiEaf_kGYNk2_W-tzFT5HP8z19
+**video link for supervisor view:** https://drive.google.com/open?id=1kljUKlesegiFnhJu4gSLJh04_nMkdTJK
+
 * Bamazon is an Amazon-like storefront created with the MySQL skills.
 To install the app:
 * First have the github repo `https://github.com/marciamoss/bamazon.git` cloned to your computer and then in the git    bash run command 'npm i' without the quotes. That will install all the packages required to run the app.
@@ -11,7 +16,7 @@ To install the app:
     DBPASSWORD=your db password
     DBDATABASE=your db name
 
-* If you don't have your own data you can use the shema.sql and seeds.sql in db folder to create a dummy database to run    this app.
+* If you don't have your own data you can use the schema.sql and seeds.sql in db folder to create a dummy database to run this app.
 
 * There are three views built in this app:
 
