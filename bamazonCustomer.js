@@ -27,7 +27,7 @@ function customerview(){
                 type: "list",
                 message: (`\nWHAT IS THE ITEM YOU WOULD LIKE TO PURCHASE?\n\r`.bold.bgBlue+`${strpad.center('ITEMID', 8)} | ${strpad.right('PRODUCT NAME', 35)} | ${strpad.right('DEPARTMENT NAME', 15)} | ${strpad.center('PRICE', 8)} | ${strpad.center('STOCK', 7)}  \n${'---------------------------------------------------------------------------------------'}\n`),
                 choices: itemlist.items,
-                pageSize:15
+                pageSize:30
             },
             {
                 when: (response) => { 
